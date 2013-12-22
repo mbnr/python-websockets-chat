@@ -72,7 +72,7 @@ def hello():
 @sockets.route('/submit')
 def inbox(ws):
     """Receives incoming chat messages, inserts them into Redis."""
-    while ws.stream is not None:
+    while ws.socket is not None:
         # Sleep to prevent *contstant* context-switches.
         gevent.sleep(0.1)
         message = ws.receive()
@@ -86,7 +86,7 @@ def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
     chats.register(ws)
 
-    while ws.stream is not None:
+    while ws.socket is not None:
         # Context switch while `ChatBackend.start` is running in the background.
         gevent.sleep()
 
